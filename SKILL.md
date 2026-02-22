@@ -10,8 +10,8 @@ description: >-
   color palettes, typography, accessibility, responsive layout, component
   design, or frontend best practices across React, Next.js, Vue, Svelte,
   SwiftUI, Flutter, Tailwind, and shadcn/ui.
-version: 2.1.0
-tools: Bash, Write, Read, Edit
+version: 2.2.0
+tools: Bash, Write, Read, Edit, sandbox_execute
 argument-hint: "Describe the frontend you want to build"
 license: Complete terms in LICENSE.txt
 ---
@@ -21,6 +21,15 @@ license: Complete terms in LICENSE.txt
 Create distinctive, production-grade frontend interfaces that avoid generic "AI slop"
 aesthetics, backed by a searchable design database with 67 styles, 96 color palettes,
 57 font pairings, 99 UX guidelines, and 25 chart types across 13 technology stacks.
+
+## Agent Delegation
+
+Delegate UI component creation to `designer` agent. Use `worker` for complex logic.
+
+- **Agent**: `designer` (Sonnet, maxTurns=20)
+- **Tools**: Read, Write, Edit, Bash, Glob
+- **Delegate when**: building UI components, writing HTML/CSS/JS, applying design systems
+- **Use `worker` instead when**: implementing complex business logic, data processing, or API integration
 
 ## Design Thinking
 
@@ -59,8 +68,19 @@ Extract key information from user request:
 
 ### Step 2: Generate Design System
 
-**Always start with `--design-system`** to get comprehensive recommendations with reasoning:
+**Always start with `--design-system`** to get comprehensive recommendations with reasoning.
 
+**Preferred (Sandbox)**:
+```python
+# sandbox_execute
+import sys
+sys.path.insert(0, "/Users/joneshong/.claude/skills/frontend-design/scripts")
+import search
+result = search.run_design_system("<product_type> <industry> <keywords>", project="Project Name")
+output(result)
+```
+
+**Fallback (Bash)**:
 ```bash
 python3 ~/.claude/skills/frontend-design/scripts/search.py "<product_type> <industry> <keywords>" --design-system [-p "Project Name"]
 ```
@@ -171,6 +191,16 @@ Synthesize the design system + searches and implement working code that is:
 - [ ] No horizontal scroll on mobile
 - [ ] All images have alt text
 - [ ] `prefers-reduced-motion` respected
+
+## Sandbox Optimization
+
+This skill is **sandbox-optimized**. Batch operations run inside `sandbox_execute`:
+
+- **Design system generation**: Import `scripts/search.py` and `scripts/design_system.py` in sandbox to run all 5 domain searches in one pass
+- **Multi-domain search**: Batch multiple `--domain` queries in a single sandbox call instead of separate Bash invocations
+- **Design system persistence**: Import `scripts/design_system.py` in sandbox to write MASTER.md and page overrides atomically
+
+Principle: **Deterministic batch work → sandbox; reasoning/presentation → LLM.**
 
 ## Continuous Improvement
 
