@@ -276,7 +276,8 @@ Accumulated lessons signal when to run `/skill-optimizer` for a deeper structura
 | File | Load at | One-line purpose |
 |---|---|---|
 | `references/pre-build-patterns.md` | Pre-build gates (before Step 1) | 3 structured checks before coding |
-| `references/ai-slop-detection.md` | Step 5 implement, Step 6 critique | Anti-AI aesthetic detection rules |
+| `references/ai-slop-detection.md` | Step 5 implement, Step 6 critique | Anti-AI aesthetic detection (post-hoc) |
+| `references/anti-cliche.md` | Between Step 2 design system + Step 5 implement | Conditional prohibitions ("NEVER UNLESS brand spec uses it") |
 | `references/direction-advisor.md` | Step 0 (only if ambiguous) | 5-school options + 禁同列 hard rule |
 | `references/critique-5d.md` | After Pre-Delivery Checklist passes | 5D rubric with per-output weights |
 
