@@ -58,6 +58,19 @@ Interpret creatively and make unexpected choices that feel genuinely designed fo
 
 ## Workflow
 
+> **Pre-build gates** — before coding, run the three structured checks in
+> [`references/pre-build-patterns.md`](references/pre-build-patterns.md):
+> (1) decide how much to ask based on context, (2) declare the design system and wait for
+> confirmation, (3) show a v0 with placeholders before the full build.
+
+### Step 0: Direction Advisor (only when request is ambiguous)
+
+If the user's request is vague ("make something nice", "modern feel", "professional look")
+**and** no existing design-system/MASTER.md or brand reference is present, load
+[`references/direction-advisor.md`](references/direction-advisor.md) and pick 3 schools
+**from different rows** to present as Options A/B/C. Skip this step entirely if user
+already pointed at a brand/site or an existing design system.
+
 ### Step 1: Analyze Requirements
 
 Extract key information from user request:
@@ -67,6 +80,25 @@ Extract key information from user request:
 - **Stack**: React, Vue, Next.js, or default to `html-tailwind`
 
 ### Step 2: Generate Design System
+
+**Option A — Match an existing site's design** (when user references a known brand/site):
+
+Check if a ready-made DESIGN.md exists:
+```bash
+ls ~/workshop/vendor/awesome-design-md/design-md/
+# 54 sites: airbnb, claude, figma, linear.app, notion, stripe, vercel, ...
+```
+
+If found, read it as the design system source of truth:
+```bash
+cat ~/workshop/vendor/awesome-design-md/design-md/<site>/DESIGN.md
+```
+
+Each DESIGN.md contains: visual theme, color semantics, typography hierarchy, component styles, layout principles, shadow system, do/don't, responsive rules, and agent prompt guide. Use it directly — skip `--design-system` generation.
+
+Preview files (`preview.html`, `preview-dark.html`) are also available for visual reference.
+
+**Option B — Generate a custom design system** (default):
 
 **Always start with `--design-system`** to get comprehensive recommendations with reasoning.
 
@@ -82,7 +114,7 @@ output(result)
 
 **Fallback (Bash)**:
 ```bash
-python3 ~/.claude/skills/frontend-design/scripts/search.py "<product_type> <industry> <keywords>" --design-system [-p "Project Name"]
+~/.local/bin/python3 ~/.claude/skills/frontend-design/scripts/search.py "<product_type> <industry> <keywords>" --design-system [-p "Project Name"]
 ```
 
 This searches 5 domains in parallel (product, style, color, landing, typography), applies reasoning rules, and returns a complete design system: pattern, style, colors, typography, effects, and anti-patterns.
@@ -90,7 +122,7 @@ This searches 5 domains in parallel (product, style, color, landing, typography)
 **Persist for cross-session use** (Master + Overrides pattern):
 
 ```bash
-python3 ~/.claude/skills/frontend-design/scripts/search.py "<query>" --design-system --persist -p "Project Name" [--page "dashboard"]
+~/.local/bin/python3 ~/.claude/skills/frontend-design/scripts/search.py "<query>" --design-system --persist -p "Project Name" [--page "dashboard"]
 ```
 
 Creates `design-system/MASTER.md` (global source of truth) and optionally `design-system/pages/<name>.md` (page-specific overrides). When building a specific page, check its override file first; if it exists, its rules override the Master.
@@ -98,7 +130,7 @@ Creates `design-system/MASTER.md` (global source of truth) and optionally `desig
 ### Step 3: Supplement with Detailed Searches (as needed)
 
 ```bash
-python3 ~/.claude/skills/frontend-design/scripts/search.py "<keyword>" --domain <domain> [-n <max_results>]
+~/.local/bin/python3 ~/.claude/skills/frontend-design/scripts/search.py "<keyword>" --domain <domain> [-n <max_results>]
 ```
 
 | Need | Domain | Example |
@@ -114,7 +146,7 @@ python3 ~/.claude/skills/frontend-design/scripts/search.py "<keyword>" --domain 
 Get implementation-specific best practices. Default to `html-tailwind` if unspecified.
 
 ```bash
-python3 ~/.claude/skills/frontend-design/scripts/search.py "<keyword>" --stack html-tailwind
+~/.local/bin/python3 ~/.claude/skills/frontend-design/scripts/search.py "<keyword>" --stack html-tailwind
 ```
 
 Available stacks: `html-tailwind`, `react`, `nextjs`, `vue`, `svelte`, `swiftui`, `react-native`, `flutter`, `shadcn`, `jetpack-compose`
@@ -177,6 +209,11 @@ Synthesize the design system + searches and implement working code that is:
 
 ## Pre-Delivery Checklist
 
+> **Binary floor — must all pass before showing user.** For "will this be remembered?"
+> ceiling check, run the 5D Critique rubric in
+> [`references/critique-5d.md`](references/critique-5d.md) **after** this checklist passes.
+> Use rubric only for visual outputs (landing/dashboard/component/poster), not for non-visual deliverables.
+
 - [ ] No emojis used as icons (use SVG instead)
 - [ ] All icons from consistent icon set (Heroicons/Lucide)
 - [ ] Brand logos are correct (verified from Simple Icons)
@@ -225,11 +262,24 @@ Accumulated lessons signal when to run `/skill-optimizer` for a deeper structura
 
 ### Scripts
 - **`scripts/search.py`** — Design database search engine. Usage:
-  `python3 search.py "<query>" --design-system [-p "Name"]` or
-  `python3 search.py "<keyword>" --domain <domain> [-n max]`
+  `~/.local/bin/python3 search.py "<query>" --design-system [-p "Name"]` or
+  `~/.local/bin/python3 search.py "<keyword>" --domain <domain> [-n max]`
 - **`scripts/core.py`** — BM25 search core with CSV config
 - **`scripts/design_system.py`** — Design system generation and persistence
 
 ### Data
 - **`data/`** — CSV databases: styles, colors, typography, products, landing, charts,
   ux-guidelines, web-interface, react-performance, ui-reasoning, icons, stacks/
+
+### References (phase-gated — only load when entering the matching step)
+
+| File | Load at | One-line purpose |
+|---|---|---|
+| `references/pre-build-patterns.md` | Pre-build gates (before Step 1) | 3 structured checks before coding |
+| `references/ai-slop-detection.md` | Step 5 implement, Step 6 critique | Anti-AI aesthetic detection rules |
+| `references/direction-advisor.md` | Step 0 (only if ambiguous) | 5-school options + 禁同列 hard rule |
+| `references/critique-5d.md` | After Pre-Delivery Checklist passes | 5D rubric with per-output weights |
+
+**Anti-pattern warning**: this phase table assumes start-to-finish single session. If a
+sub-agent enters mid-workflow (e.g. "just regenerate the color tokens"), let it pick
+references on demand instead of pre-loading the whole table.
