@@ -105,8 +105,8 @@ Preview files (`preview.html`, `preview-dark.html`) are also available for visua
 **Preferred (Sandbox)**:
 ```python
 # sandbox_execute
-import sys
-sys.path.insert(0, "/Users/joneshong/.claude/skills/frontend-design/scripts")
+import sys, os
+sys.path.insert(0, os.path.expanduser("~/.claude/skills/frontend-design/scripts"))
 import search
 result = search.run_design_system("<product_type> <industry> <keywords>", project="Project Name")
 output(result)
