@@ -1,15 +1,6 @@
 ---
 name: frontend-design
-description: >-
-  Create distinctive, production-grade frontend interfaces with high design
-  quality. Use this skill when the user asks to "build a website", "create a
-  landing page", "design a dashboard", "make a React component", "design UI",
-  "前端設計", "網頁設計", "UI 設計", "建立網頁", "做前端",
-  "UI/UX 設計", "使用者介面設計", "UX 優化", "介面設計", "用戶體驗",
-  or discusses building web components, pages, applications, UI styles,
-  color palettes, typography, accessibility, responsive layout, component
-  design, or frontend best practices across React, Next.js, Vue, Svelte,
-  SwiftUI, Flutter, Tailwind, and shadcn/ui.
+description: "design, frontend, build, website, create, landing, page, 前端設計, 網頁設計, UI 設計, 建立網頁"
 version: 2.2.0
 tools: Bash, Write, Read, Edit, sandbox_execute
 argument-hint: "Describe the frontend you want to build"
