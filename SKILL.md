@@ -271,6 +271,8 @@ Accumulated lessons signal when to run `/skill-optimizer` for a deeper structura
 | `references/anti-cliche.md` | Between Step 2 design system + Step 5 implement | Conditional prohibitions ("NEVER UNLESS brand spec uses it") |
 | `references/direction-advisor.md` | Step 0 (only if ambiguous) | 5-school options + 禁同列 hard rule |
 | `references/critique-5d.md` | After Pre-Delivery Checklist passes | 5D rubric with per-output weights |
+| `references/motion-timing-tables.md` | Before writing any animation / transition / micro-interaction | Duration, easing, spring, stagger and overshoot lookup by element type and personality |
+| `references/motion-quality-checklist.md` | Reviewing motion, alongside critique-5d | Motion pass/fail criteria with CRITICAL / HIGH / MEDIUM severity tiers |
 
 **Anti-pattern warning**: this phase table assumes start-to-finish single session. If a
 sub-agent enters mid-workflow (e.g. "just regenerate the color tokens"), let it pick
