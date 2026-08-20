@@ -76,13 +76,14 @@ Extract key information from user request:
 
 Check if a ready-made DESIGN.md exists:
 ```bash
-ls ~/workshop/vendor/awesome-design-md/design-md/
+# Optional: a local checkout of a design-reference collection, if you keep one
+ls <your-design-reference-dir>/design-md/
 # 54 sites: airbnb, claude, figma, linear.app, notion, stripe, vercel, ...
 ```
 
 If found, read it as the design system source of truth:
 ```bash
-cat ~/workshop/vendor/awesome-design-md/design-md/<site>/DESIGN.md
+cat <your-design-reference-dir>/design-md/<site>/DESIGN.md
 ```
 
 Each DESIGN.md contains: visual theme, color semantics, typography hierarchy, component styles, layout principles, shadow system, do/don't, responsive rules, and agent prompt guide. Use it directly — skip `--design-system` generation.
